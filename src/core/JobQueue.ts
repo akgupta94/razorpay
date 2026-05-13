@@ -38,11 +38,22 @@ export class JobQueue {
       status: JobStatus.PENDING,
       leaseId: null,
       leaseExpireAt: null,
-      nextRunAt: now,
+      nextRunAt: spec.delayInMs ? now + spec.delayInMs : now,
     };
-
+    console.log(" Job Added", JSON.stringify(job))
     this.jobs.set(id, job);
     return id;
+  }
+
+  public cancelJob(jobId: string){
+    const job = this.jobs.get(jobId)
+    if (job && job.status === JobStatus.PENDING) {
+      job.status = JobStatus.CANCELLED;
+      this.jobs.set(jobId, job);
+      return `Job ${jobId} has been cancelled successfully`;
+    }
+    return "No Jobs available or job is already running/processed";
+
   }
 
   /**
@@ -71,6 +82,7 @@ export class JobQueue {
         job.status === JobStatus.PENDING &&
         job.nextRunAt <= now
       );
+
     });
 
     if (availableJobs.length === 0) {

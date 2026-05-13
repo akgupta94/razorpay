@@ -7,6 +7,7 @@ export enum JobStatus {
   SUCCEEDED = 'SUCCEEDED',
   FAILED = 'FAILED', // Permanent failure or max retries exceeded (DLQ)
   RETRY_SCHEDULED = 'RETRY_SCHEDULED',
+  CANCELLED = 'CANCELLED',
 }
 
 /**
@@ -47,6 +48,8 @@ export interface JobSpec {
   name?: string | undefined;
   /** Optional description for the job */
   description?: string | undefined;
+  /** Optional delay in milliseconds before the job can be executed */
+  delayInMs?: number | undefined;
 }
 
 /**

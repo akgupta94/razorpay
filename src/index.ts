@@ -65,10 +65,21 @@ app.post('/jobs/submit', (req: Request, res: Response) => {
     maxRetries: spec.maxRetries,
     name: spec.name,
     description: spec.description,
+    delayInMs: spec.delayInMs,
   });
 
   res.status(201).json({ id, message: 'Job submitted successfully' });
 });
+
+app.post('/jobs/cancel', (req: Request, res: Response) => {
+  const { jobId } = req.body;
+  if (!jobId) {
+    res.status(400).json({ error: 'Missing job ID' });
+    return;
+  }
+  const message = queue.cancelJob(jobId);
+  res.status(200).json({ message });
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
