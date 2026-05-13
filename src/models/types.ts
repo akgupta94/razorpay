@@ -40,13 +40,13 @@ export interface JobSpec {
   /** The data to be processed by the job handler */
   payload: JobPayload;
   /** Job priority (0-9). Higher numbers execute first. Defaults to 5. */
-  priority?: number;
+  priority?: number | undefined;
   /** Maximum number of retries before moving to DLQ. Defaults to 3. */
-  maxRetries?: number;
+  maxRetries?: number | undefined;
   /** Optional name for the job */
-  name?: string;
+  name?: string | undefined;
   /** Optional description for the job */
-  description?: string;
+  description?: string | undefined;
 }
 
 /**
@@ -66,9 +66,9 @@ export interface Job {
   /** Current number of failed attempts. */
   attemptCount: number;
   /** Optional name for the job */
-  name?: string;
+  name?: string | undefined;
   /** Optional description for the job */
-  description?: string;
+  description?: string | undefined;
   /** Timestamp when the job was created */
   createdAt: number;
   /** Timestamp when the job was last updated */
